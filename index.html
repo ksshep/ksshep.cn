@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>慧德自动化 | Huide Automation</title>
+<meta name="description" content="无锡慧德自动化科技有限公司 - 专业致力于自动化焊接软件定制与开发">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-brand"><span>慧德自动化</span><span class="nav-en">Huide Automation</span></div>
+  <div class="nav-links">
+    <a href="#home">首页</a>
+    <a href="#about">公司简介</a>
+    <a href="#products">产品中心</a>
+    <a href="#accessories">配件中心</a>
+    <a href="#contact">联系我们</a>
+  </div>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>无锡慧德自动化科技有限公司</h1>
+    <p class="subtitle">专业致力于自动化焊接软件定制与开发</p>
+    <p class="tagline">诚信 · 创新 · 共赢 | Integrity · Innovation · Win-Win</p>
+    <a href="#products" class="cta-btn">了解产品</a>
+  </div>
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+  </div>
+</section>
+
+<section class="section about" id="about">
+  <div class="container">
+    <div class="section-header">
+      <h2>公司简介</h2>
+      <p class="en-title">Company Profile</p>
+      <div class="divider"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-image">
+        <img src="images/optimized/page2.jpg" alt="公司简介" loading="lazy">
+      </div>
+      <div class="about-text" id="aboutText"></div>
+    </div>
+    <div class="about-stats" id="statsGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="products">
+  <div class="container">
+    <div class="section-header">
+      <h2>产品中心</h2>
+      <p class="en-title">Products</p>
+      <div class="divider"></div>
+    </div>
+    <div class="products-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="accessories">
+  <div class="container">
+    <div class="section-header">
+      <h2>配件中心</h2>
+      <p class="en-title">Accessories</p>
+      <div class="divider"></div>
+    </div>
+    <div class="products-grid" id="accessoryGrid"></div>
+  </div>
+</section>
+
+<section class="section contact" id="contact">
+  <div class="container">
+    <div class="section-header">
+      <h2>联系我们</h2>
+      <p class="en-title">Contact Us</p>
+      <div class="divider"></div>
+    </div>
+    <div class="contact-grid" id="contactGrid"></div>
+    <div class="qr-section">
+      <h3>扫码联系 / Scan to Connect</h3>
+      <div class="qr-grid">
+        <div class="qr-item"><img src="images/qrcodes/sales_qr.png" alt="销售微信"><span>销售微信</span></div>
+        <div class="qr-item"><img src="images/qrcodes/tech_qr.png" alt="技术微信"><span>技术微信</span></div>
+        <div class="qr-item"><img src="images/qrcodes/wechat_qr.png" alt="微信客服"><span>微信客服</span></div>
+        <div class="qr-item"><img src="images/qrcodes/video_qr.png" alt="视频号"><span>视频号</span></div>
+        <div class="qr-item"><img src="images/qrcodes/overseas_qr.png" alt="海外业务"><span>海外业务</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2025 无锡慧德自动化科技有限公司 &mdash; All Rights Reserved</p>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle"></h2>
+      <button class="modal-close" id="modalClose">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="modal-images" id="modalImages"></div>
+      <div class="modal-info" id="modalInfo"></div>
+      <div class="modal-en" id="modalEn"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script>
+var DATA = getData();
+var PRODUCTS = DATA.products;
+var ACCESSORIES = DATA.accessories;
+var CONTACT = DATA.contact;
+
+function renderAbout() {
+  var text = document.getElementById("aboutText");
+  var about = DATA.about;
+  var cnHtml = about.cn.split("\n").map(function(p) {
+    return p.trim() ? "<p>" + p + "</p>" : "";
+  }).join("");
+  var enHtml = about.en.split("\n").map(function(p) {
+    return p.trim() ? p : "";
+  }).join("<br>");
+  text.innerHTML = "<h3>关于我们 / About Us</h3>" + cnHtml + "<p class=\"en-text\">" + enHtml + "</p>";
+
+  var statsHtml = DATA.stats.map(function(s) {
+    return "<div class=\"stat-item\"><div class=\"stat-number\">" + s.number + "</div><div class=\"stat-label\">" + s.label + "</div></div>";
+  }).join("");
+  document.getElementById("statsGrid").innerHTML = statsHtml;
+}
+
+function renderProducts(products, gridId) {
+  var grid = document.getElementById(gridId);
+  var html = "";
+  products.forEach(function(p) {
+    html +=
+      "<div class=\"product-card\" data-id=\"" + p.id + "\" data-acc=\"" + (gridId === "accessoryGrid") + "\">" +
+      "<div class=\"card-img-wrapper\">" +
+      "<img class=\"card-img\" src=\"images/thumbs/page" + p.page + ".jpg\" alt=\"" + p.cn + "\" loading=\"lazy\">" +
+      "</div>" +
+      "<div class=\"card-body\">" +
+      "<h3>" + p.cn + "</h3>" +
+      "<p class=\"card-en\">" + p.en + "</p>" +
+      "<p>" + (p.usage || p.description || "") + "</p>" +
+      "</div>" +
+      "<div class=\"card-footer\">" +
+      "<button class=\"btn-detail\" onclick=\"openModal('" + p.id + "', " + (gridId === "accessoryGrid") + ")\">查看详情</button>" +
+      "</div>" +
+      "</div>";
+  });
+  grid.innerHTML = html;
+}
+
+renderProducts(PRODUCTS, "productGrid");
+renderProducts(ACCESSORIES, "accessoryGrid");
+renderAbout();
+
+var contactItems = [
+  { icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z", label: "公司地址", info: CONTACT.address },
+  { icon: "M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1-.45 1-1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z", label: "联系电话", info: CONTACT.phones.join(" / ") },
+  { icon: "M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z", label: "微信 / WhatsApp", info: "微信: " + CONTACT.wechat + " | WhatsApp: " + CONTACT.whatsapp }
+];
+var contactHtml = "";
+contactItems.forEach(function(c) {
+  contactHtml += "<div class=\"contact-item\">" +
+    "<div class=\"contact-icon\"><svg viewBox=\"0 0 24 24\"><path d=\"" + c.icon + "\"/></svg></div>" +
+    "<div class=\"contact-info\"><h4>" + c.label + "</h4><p>" + c.info + "</p></div>" +
+    "</div>";
+});
+document.getElementById("contactGrid").innerHTML = contactHtml;
+
+function openModal(id, isAcc) {
+  var data = isAcc ? ACCESSORIES.find(function(a) { return a.id === id; }) : PRODUCTS.find(function(p) { return p.id === id; });
+  if (!data) return;
+  document.getElementById("modalTitle").innerHTML = data.cn + " <span style=\"font-size:0.9rem;color:#888;font-weight:400\">" + data.en + "</span>";
+  document.getElementById("modalImages").innerHTML = "<img class=\"modal-img\" src=\"images/optimized/page" + data.page + ".jpg\" alt=\"" + data.cn + "\">";
+
+  var infoHtml = "";
+  if (data.usage) {
+    infoHtml += "<h4>用途 / Application</h4><p>" + data.usage + "</p>";
+  }
+  if (data.function) {
+    infoHtml += "<h4>功能 / Function</h4><p>" + data.function + "</p>";
+  }
+  if (data.description) {
+    infoHtml += "<p>" + data.description.replace(/\n/g, "</p><p>") + "</p>";
+  }
+  document.getElementById("modalInfo").innerHTML = infoHtml;
+
+  var enHtml = "";
+  if (data.usageEn) {
+    enHtml += "<h4>Application</h4><p class=\"en-text\">" + data.usageEn + "</p>";
+  }
+  if (data.functionEn) {
+    enHtml += "<h4>Function</h4><p class=\"en-text\">" + data.functionEn + "</p>";
+  }
+  if (data.descriptionEn) {
+    enHtml += "<p class=\"en-text\">" + data.descriptionEn.replace(/\n/g, "</p><p>") + "</p>";
+  }
+  document.getElementById("modalEn").innerHTML = enHtml;
+
+  document.getElementById("modalOverlay").style.display = "flex";
+}
+
+document.getElementById("modalClose").addEventListener("click", function() {
+  document.getElementById("modalOverlay").style.display = "none";
+});
+document.getElementById("modalOverlay").addEventListener("click", function(e) {
+  if (e.target === this) this.style.display = "none";
+});
+
+(function() {
+  var hamburger = document.createElement("button");
+  hamburger.className = "hamburger";
+  hamburger.innerHTML = "<span></span><span></span><span></span>";
+  var nav = document.querySelector(".navbar");
+  var navLinks = document.querySelector(".nav-links");
+  nav.insertBefore(hamburger, navLinks);
+  hamburger.addEventListener("click", function() {
+    this.classList.toggle("active");
+    navLinks.classList.toggle("open");
+  });
+  document.querySelectorAll(".nav-links a").forEach(function(a) {
+    a.addEventListener("click", function() {
+      hamburger.classList.remove("active");
+      navLinks.classList.remove("open");
+    });
+  });
+  window.addEventListener("scroll", function() {
+    if (window.scrollY > 80) {
+      nav.classList.add("scrolled");
+    } else {
+      nav.classList.remove("scrolled");
+    }
+  });
+})();
+</script>
+</body>
+</html>

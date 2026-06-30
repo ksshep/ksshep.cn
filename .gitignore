@@ -1,0 +1,16 @@
+# Large source images (already converted)
+*.png
+# OS files
+.DS_Store
+Thumbs.db
+# Python
+__pycache__/
+*.pyc
+
+# Python scripts
+*.py
+
+/ksshep.cn-main/
+/repo/
+/temp_repo/
+/repo.zip
